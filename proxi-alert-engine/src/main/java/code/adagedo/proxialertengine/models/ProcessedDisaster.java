@@ -2,7 +2,6 @@ package code.adagedo.proxialertengine.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,15 +16,16 @@ import java.time.Instant;
 @AllArgsConstructor
 @Entity
 @Table(
-        name = "users",
+        name = "processed_eonet_events",
         indexes = {
-                @Index(name = "idx_user_id", columnList = "id", unique = true),
+                @Index(name = "idx_eonet_id", columnList = "eonet_id", unique = true),
         },
         schema = "RECORD"
 )
 public class ProcessedDisaster{
 
     @Id
+    @Column(name = "eonet_id")
     private String eonetId;
 
     @Column
