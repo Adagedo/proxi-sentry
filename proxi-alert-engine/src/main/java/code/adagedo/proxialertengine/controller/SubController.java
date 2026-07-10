@@ -31,7 +31,7 @@ public class SubController {
         );
         SubscriptionResponse response = new SubscriptionResponse(
                 HttpStatusCode.valueOf(200),
-                "Welcome to Proxi-Sentry! You have successfully subscribed to real-time proximity disaster tracking.",
+                "Welcome to ProxySentry! You have successfully subscribed to real-time proximity disaster tracking. You will now receive immediate notifications for any environmental hazards detected near your location.",
                 LocalDateTime.now(),
                 subscriptionData
         );
