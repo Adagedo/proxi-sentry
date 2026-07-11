@@ -39,7 +39,7 @@ public class User extends BaseModel{
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "longitude", precision = 10, scale = 8)
+    @Column(name = "longitude", precision = 11, scale = 8)
     private BigDecimal longitude;
 
     @Column(name = "latitude", precision = 10, scale = 8)
