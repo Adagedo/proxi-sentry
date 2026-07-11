@@ -5,6 +5,7 @@ import code.adagedo.proxialertengine.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,20 +16,33 @@ public class ProximityAlertService {
     private final UserRepository userRepository;
     private static final double EARTH_RADIUS_IN_KM = 6371.0;
 
-    public List<User> processUsersToSendDisasterAlert(double disasterLat, double disasterLon, double radius){
+    public List<User> processUsersToSendDisasterAlert(BigDecimal disasterLat, BigDecimal disasterLon, double radius){
+
+        double latDouble = disasterLat.doubleValue();
+        double lonDouble = disasterLon.doubleValue();
 
         double degreeOffset = radius / 111.0;
-        double minLat = disasterLat - degreeOffset;
-        double maxLat = disasterLat + degreeOffset;
-        double minLon = disasterLon - degreeOffset;
-        double maxLon = disasterLon + degreeOffset;
+        double minLat = latDouble - degreeOffset;
+        double maxLat = latDouble + degreeOffset;
+        double minLon = lonDouble - degreeOffset;
+        double maxLon = lonDouble + degreeOffset;
 
-        List<User> users = userRepository.findByLatitudeBetweenAndLongitudeBetween(minLat, maxLat, minLon, maxLon);
+        List<User> users = userRepository.findByLatitudeBetweenAndLongitudeBetween(
+                BigDecimal.valueOf(minLat),
+                BigDecimal.valueOf(maxLat),
+                BigDecimal.valueOf(minLon),
+                BigDecimal.valueOf(maxLon)
+        );
 
         List<User> usersToAlert = new ArrayList<>();
 
         for(User user: users){
-            double distance = calculateDistance(disasterLat, disasterLon, user.getLatitude(), user.getLongitude());
+            double distance = calculateDistance(
+                    latDouble,
+                    lonDouble,
+                    user.getLatitude().doubleValue(),
+                    user.getLongitude().doubleValue()
+            );
             if(distance < radius){
                 usersToAlert.add(user);
             }
@@ -36,6 +50,7 @@ public class ProximityAlertService {
 
         return usersToAlert;
     }
+
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);

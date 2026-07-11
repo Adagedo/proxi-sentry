@@ -5,6 +5,7 @@ import code.adagedo.proxialertengine.dtos.SubscriptionRequest;
 import code.adagedo.proxialertengine.dtos.SubscriptionResponse;
 import code.adagedo.proxialertengine.models.User;
 import code.adagedo.proxialertengine.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,10 @@ import java.time.LocalDateTime;
 @CrossOrigin(
         methods = {RequestMethod.POST, RequestMethod.GET}
 )
+@RequiredArgsConstructor
 public class SubController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping("/api/v1/users/subscribe")
     public ResponseEntity<SubscriptionResponse> handleSubscription(@RequestBody SubscriptionRequest request){

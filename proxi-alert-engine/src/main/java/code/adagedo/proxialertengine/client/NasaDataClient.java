@@ -1,5 +1,6 @@
 package code.adagedo.proxialertengine.client;
 
+import code.adagedo.proxialertengine.dtos.eonets.Category;
 import code.adagedo.proxialertengine.dtos.eonets.EonetPayload;
 import code.adagedo.proxialertengine.dtos.eonets.Events;
 import code.adagedo.proxialertengine.dtos.eonets.Geometry;
@@ -19,9 +20,7 @@ import org.springframework.web.client.RestClient;
 import tools.jackson.databind.ObjectMapper;
 
 import java.net.NoRouteToHostException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -34,7 +33,7 @@ public class NasaDataClient {
 
     private final ProximityAlertService proximityAlertService;
 
-    private final Set<String> knownEventsId = new HashSet<>();
+    private final Set<String> knownEvents = new HashSet<>();
 
     @EventListener(ApplicationReadyEvent.class)
 //    @Scheduled(fixedRate = 1, timeUnit = TimeUnit.HOURS) // commenting until full futures of the application is ready
@@ -54,26 +53,28 @@ public class NasaDataClient {
 //        System.out.println(payload);
         EonetPayload eonetPayload = mapper.readValue(payload, EonetPayload.class);
 //        System.out.println(eonetPayload);
-        for (Events events: eonetPayload.events()){
-//            System.out.println(events.geometries());
-            if (knownEventsId.contains(events.id())) {
-                log.info("Seen events: {}", events.id());
-            } else {
-                knownEventsId.add(events.id());
+        for (Events events: eonetPayload.events()) {
+            System.out.println(events.categories().getFirst().title());
+            if (events.geometries().isEmpty()) continue;
+            Geometry latestDisasterLocation = events.geometries().getLast();
+            String processedDisasterEvents = events.id()  + "_" + latestDisasterLocation.date();
+            if(knownEvents.contains(processedDisasterEvents)){
+                continue;
             }
-            for (Geometry geometry: events.geometries()){
-               double longitude = geometry.coordinates().getFirst();
-                double latitude = geometry.coordinates().get(1);
-                double radius = getStandardRadiusInKm(events.title());
-                List<User> users = proximityAlertService.processUsersToSendDisasterAlert(longitude, latitude, radius);
-                for (User user: users){
-                    String userEmail = user.getEmail();
-                    String userPhoneNumber = user.getPhoneNumber();
-                    // send publish
-                }
-//                System.out.println(co);
-            }
+            knownEvents.add(processedDisasterEvents);
+
+            double longitude = latestDisasterLocation.coordinates().getFirst();
+            double latitude = latestDisasterLocation.coordinates().get(1);
+            double radius = getStandardRadiusInKm(events.categories().getFirst().title());
+//          List<User> users = proximityAlertService.processUsersToSendDisasterAlert(longitude, latitude, radius);
+//            for (User user : users) {
+//                String userEmail = user.getEmail();
+//                String userPhoneNumber = user.getPhoneNumber();
+//                // send publish
+//            }
         }
+//                System.out.println(co);
+
     }
 
     private double getStandardRadiusInKm(String title){

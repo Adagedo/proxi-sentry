@@ -1,10 +1,12 @@
 package code.adagedo.proxialertengine.dtos;
 
+import java.math.BigDecimal;
+
 public record SubscriptionData(
         String email,
         String phoneNumber,
-        double latitude,
-        double longitude
+        BigDecimal latitude,
+        BigDecimal longitude
 
 ) {
 }

@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+import java.math.BigDecimal;
+
 public record SubscriptionRequest(
         String firstName,
 
@@ -17,8 +19,8 @@ public record SubscriptionRequest(
         @NotBlank(message = "phone number is required")
         String phoneNumber,
 
-        Long latitude,
+        BigDecimal latitude,
 
-        Long longitude
+        BigDecimal longitude
 ) {
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
+
 
 @EqualsAndHashCode(callSuper = true)
 @Getter
@@ -18,8 +20,7 @@ import lombok.experimental.SuperBuilder;
         indexes = {
                 @Index(name = "idx_user_id", columnList = "id", unique = true),
                 @Index(name = "idx_user_email", columnList = "email", unique = true),
-                @Index(name = "idx_user_long", columnList = "longitude"),
-                @Index(name = "idx_user_lat", columnList = "latitude")
+                @Index(name = "idx_user_location", columnList = "longitude, longitude")
         },
         schema = "RECORD"
 )
@@ -38,11 +39,11 @@ public class User extends BaseModel{
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "longitude")
-    private long longitude;
+    @Column(name = "longitude", precision = 10, scale = 8)
+    private BigDecimal longitude;
 
-    @Column(name = "latitude")
-    private long latitude;
+    @Column(name = "latitude", precision = 10, scale = 8)
+    private BigDecimal latitude;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
