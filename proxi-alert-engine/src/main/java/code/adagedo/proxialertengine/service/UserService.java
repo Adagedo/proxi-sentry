@@ -1,6 +1,7 @@
 package code.adagedo.proxialertengine.service;
 
 import code.adagedo.proxialertengine.dtos.SubscriptionRequest;
+import code.adagedo.proxialertengine.exceptions.UserAlreadyRegisteredException;
 import code.adagedo.proxialertengine.models.User;
 import code.adagedo.proxialertengine.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,10 @@ public class UserService {
 
     private final UserRepository userRepository;
     public User registerUser(SubscriptionRequest request){
+        User user1 = userRepository.findByEmail(request.email());
+        if (user1!= null){
+            throw new UserAlreadyRegisteredException("user already subscribed");
+        }
 
         User user = User.builder()
                 .firstName(request.firstName())

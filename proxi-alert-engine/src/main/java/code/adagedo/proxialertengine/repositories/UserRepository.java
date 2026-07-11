@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             BigDecimal minLat, BigDecimal maxLat,
             BigDecimal minLon, BigDecimal maxLon
     );
+
+    User findByEmail(String email);
 }

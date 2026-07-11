@@ -1,27 +1,21 @@
 package code.adagedo.proxialertengine.client;
 
-import code.adagedo.proxialertengine.dtos.eonets.Category;
 import code.adagedo.proxialertengine.dtos.eonets.EonetPayload;
 import code.adagedo.proxialertengine.dtos.eonets.Events;
 import code.adagedo.proxialertengine.dtos.eonets.Geometry;
-import code.adagedo.proxialertengine.exceptions.CustomHttpClientConnectionException;
-import code.adagedo.proxialertengine.models.User;
+import code.adagedo.proxialertengine.exceptions.HttpClientConnectionException;
 import code.adagedo.proxialertengine.service.ProximityAlertService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.ObjectMapper;
 
-import java.net.NoRouteToHostException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -45,7 +39,7 @@ public class NasaDataClient {
                 .retrieve()
                 .onStatus(
                         HttpStatusCode::is4xxClientError, ((request, response) -> {
-                            throw new CustomHttpClientConnectionException(response.getStatusText());
+                            throw new HttpClientConnectionException(response.getStatusText());
                         })
                 )
                 .body(String.class);
