@@ -1,12 +1,9 @@
 package code.adagedo.proxialertengine.client;
 
 import code.adagedo.proxialertengine.dtos.eonets.EonetPayload;
-import code.adagedo.proxialertengine.dtos.eonets.Events;
-import code.adagedo.proxialertengine.dtos.eonets.Geometry;
 import code.adagedo.proxialertengine.exceptions.HttpClientConnectionException;
-import code.adagedo.proxialertengine.models.User;
 import code.adagedo.proxialertengine.service.DisasterEventService;
-import code.adagedo.proxialertengine.service.ProximityAlertService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.ObjectMapper;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
