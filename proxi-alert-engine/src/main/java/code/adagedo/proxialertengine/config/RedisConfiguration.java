@@ -14,9 +14,8 @@ public class RedisConfiguration {
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory);
 
-        // Serializer for the Set's key name (e.g., "proxy_sentry:known_events")
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        // Serializer for the elements stored inside the Set (e.g., "EONET_123_2026-07-11")
+
         redisTemplate.setValueSerializer(new StringRedisSerializer());
 
         redisTemplate.afterPropertiesSet();
