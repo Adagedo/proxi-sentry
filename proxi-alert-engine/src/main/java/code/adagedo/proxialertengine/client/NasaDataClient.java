@@ -45,7 +45,7 @@ public class NasaDataClient {
                 .body(String.class);
 
         EonetPayload eonetPayload = mapper.readValue(payload, EonetPayload.class);
-        disasterEventService.processAndSEndDisasterAlertToKafkaTopic(eonetPayload);
+        disasterEventService.processAndSendDisasterAlertToKafkaTopic(eonetPayload);
     }
 
 }

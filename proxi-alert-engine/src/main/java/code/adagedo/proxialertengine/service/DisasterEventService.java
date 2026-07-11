@@ -18,7 +18,7 @@ public class DisasterEventService {
     private final ProximityAlertService proximityAlertService;
     private final Set<String> knownEvents = new HashSet<>();
 
-    public void processAndSEndDisasterAlertToKafkaTopic(EonetPayload eonetPayload){
+    public void processAndSendDisasterAlertToKafkaTopic(EonetPayload eonetPayload){
         for (Events events: eonetPayload.events()) {
             System.out.println(events.categories().getFirst().title());
 
