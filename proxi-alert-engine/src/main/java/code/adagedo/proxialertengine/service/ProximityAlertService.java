@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -38,6 +39,7 @@ public class ProximityAlertService {
 
         if(users.isEmpty()){
             log.info("No users found for the current events location");
+            return Collections.emptyList();
         }
 
         List<User> usersToAlert = new ArrayList<>();

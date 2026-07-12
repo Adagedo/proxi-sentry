@@ -5,6 +5,7 @@ import code.adagedo.proxialertengine.dtos.eonets.Events;
 import code.adagedo.proxialertengine.dtos.eonets.Geometry;
 import code.adagedo.proxialertengine.models.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DisasterEventService {
@@ -41,6 +43,14 @@ public class DisasterEventService {
                     BigDecimal.valueOf(longitude),
                     radius
             );
+
+            if(users.isEmpty()){
+                log.info("Disaster alert skipped: No users found within {}km radius of coordinates ({}, {})", radius, latitude, longitude);
+                return;
+            }
+
+            log.info("Publishing {} disaster alert events to Kafka...", users.size());
+
             for (User user : users) {
                 String userEmail = user.getEmail();
                 System.out.println(userEmail);
