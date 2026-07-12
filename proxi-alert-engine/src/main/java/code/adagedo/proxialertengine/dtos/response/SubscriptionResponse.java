@@ -1,4 +1,4 @@
-package code.adagedo.proxialertengine.dtos;
+package code.adagedo.proxialertengine.dtos.response;
 
 import org.springframework.http.HttpStatusCode;
 

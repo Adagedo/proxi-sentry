@@ -1,13 +1,18 @@
 package code.adagedo.proxialertengine.models;
 
+import code.adagedo.proxialertengine.dtos.OptInChannel;
+import code.adagedo.proxialertengine.dtos.OptInStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@Entity
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@SuperBuilder
 @Table(
         name = "notification_settings",
         indexes = {
@@ -23,8 +28,10 @@ public class NotificationSetting extends BaseModel{
     private User user;
 
     @Column
-    private String channel;
+    @Enumerated(EnumType.STRING)
+    private OptInChannel channel;
 
     @Column
-    private Boolean opt_in;
+    @Enumerated(EnumType.STRING)
+    private OptInStatus optin_status;
 }

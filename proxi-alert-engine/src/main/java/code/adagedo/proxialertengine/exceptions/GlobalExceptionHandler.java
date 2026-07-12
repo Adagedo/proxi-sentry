@@ -19,4 +19,27 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(UserNotSubscribedException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotSubscribedException(UserNotSubscribedException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler(ChannelNameException.class)
+    public ResponseEntity<ErrorResponse> handleChannelNameException(ChannelNameException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setStatusCode(HttpStatus.FORBIDDEN.value());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
 }

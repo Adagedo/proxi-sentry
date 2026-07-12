@@ -1,4 +1,4 @@
-package code.adagedo.proxialertengine.dtos;
+package code.adagedo.proxialertengine.dtos.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
