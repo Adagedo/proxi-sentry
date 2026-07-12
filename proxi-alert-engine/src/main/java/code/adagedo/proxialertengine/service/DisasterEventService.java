@@ -6,19 +6,22 @@ import code.adagedo.proxialertengine.dtos.eonets.Geometry;
 import code.adagedo.proxialertengine.models.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DisasterEventService {
+
+
     private final ProximityAlertService proximityAlertService;
-    private final Set<String> knownEvents = new HashSet<>();
+    private final StringRedisTemplate redisTemplate;
+    private static final String KNOWN_EVENTS_KEY = "proxy_sentry:known_events";
 
     public void processAndSendDisasterAlertToKafkaTopic(EonetPayload eonetPayload){
         for (Events events: eonetPayload.events()) {
@@ -27,12 +30,13 @@ public class DisasterEventService {
             if (events.geometries().isEmpty()) continue;
 
             Geometry latestDisasterLocation = events.geometries().getLast();
+            System.out.println(latestDisasterLocation);
             String processedDisasterEvents = events.id()  + "_" + latestDisasterLocation.date();
 
-            if(knownEvents.contains(processedDisasterEvents)){
+            boolean isNewEvent = redisTemplate.opsForSet().add(KNOWN_EVENTS_KEY, processedDisasterEvents) == 1L;
+            if (!isNewEvent){
                 continue;
             }
-            knownEvents.add(processedDisasterEvents);
 
             double longitude = latestDisasterLocation.coordinates().getFirst();
             double latitude = latestDisasterLocation.coordinates().get(1);
