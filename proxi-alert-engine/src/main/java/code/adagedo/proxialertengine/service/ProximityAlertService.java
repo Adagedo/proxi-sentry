@@ -3,12 +3,14 @@ package code.adagedo.proxialertengine.service;
 import code.adagedo.proxialertengine.models.User;
 import code.adagedo.proxialertengine.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProximityAlertService {
@@ -33,6 +35,10 @@ public class ProximityAlertService {
                 BigDecimal.valueOf(minLon),
                 BigDecimal.valueOf(maxLon)
         );
+
+        if(users.isEmpty()){
+            log.info("No users found for the current events location");
+        }
 
         List<User> usersToAlert = new ArrayList<>();
 
