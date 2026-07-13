@@ -110,7 +110,7 @@ public class DisasterEventService {
                     case OptInChannel.EMAIL -> {
                         switch (notificationSetting.getOptin_status()){
                             case OptInStatus.SUBSCRIBED -> {
-                                eventProducer.publishEvents(events, email_topic, user);
+                                eventProducer.publishEvents(event, email_topic, user);
                                 log.info("Sending email alert for user {} to kafka topic", user.getEmail());
                             }
                             case OptInStatus.UNSUBSCRIBED -> log.info("Unsubscribed user {} not receiving email alert", user.getEmail());
@@ -124,7 +124,7 @@ public class DisasterEventService {
                         switch (notificationSetting.getOptin_status()){
 
                             case OptInStatus.SUBSCRIBED -> {
-                                eventProducer.publishEvents(events, sms_topic, user);
+                                eventProducer.publishEvents(event, sms_topic, user);
                                 log.info("Sending sms alter for user {} receiving sms alert", user.getEmail());
                             }
 
@@ -139,8 +139,8 @@ public class DisasterEventService {
 
                             case OptInStatus.SUBSCRIBED -> {
 
-                                eventProducer.publishEvents(events, sms_topic, user);
-                                eventProducer.publishEvents(events, email_topic, user);
+                                eventProducer.publishEvents(event, sms_topic, user);
+                                eventProducer.publishEvents(event, email_topic, user);
 
                                 log.info("Sending email and sms alter to kafka topic for user {} ", user.getEmail());
                             }
