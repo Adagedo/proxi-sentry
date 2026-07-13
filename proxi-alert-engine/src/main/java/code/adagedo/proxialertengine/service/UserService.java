@@ -56,15 +56,14 @@ public class UserService {
                 .latitude(request.latitude())
                 .build();
 
+        User user = userRepository.save(new_user);
+
         NotificationSetting notificationSetting = NotificationSetting.builder()
-                        .user(new_user)
+                        .user(user)
                                 .channel(OptInChannel.BOTH)
                                         .optin_status(OptInStatus.SUBSCRIBED).build();
 
-
         notificationRepository.save(notificationSetting);
-
-        User user = userRepository.save(new_user);
         log.info("saving new subscribed user to db");
         String name = user.getFirstName() + " " + user.getLastName();
         Recipient recipient = new Recipient(user.getEmail(), name);

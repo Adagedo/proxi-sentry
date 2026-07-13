@@ -7,8 +7,11 @@ import jakarta.validation.constraints.Pattern;
 import java.math.BigDecimal;
 
 public record SubscriptionRequest(
+
+        @NotBlank(message = "first name cannot be empty")
         String firstName,
 
+        @NotBlank(message = "last name cannot be empty")
         String lastName,
 
         @Email(message = "invalid email format")
