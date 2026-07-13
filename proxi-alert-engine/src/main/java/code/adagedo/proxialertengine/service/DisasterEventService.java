@@ -111,11 +111,11 @@ public class DisasterEventService {
                         switch (notificationSetting.getOptin_status()){
                             case OptInStatus.SUBSCRIBED -> {
                                 eventProducer.publishEvents(events, email_topic, user);
-                                log.info("sending email alert for user {} to kafka topic", user.getEmail());
+                                log.info("Sending email alert for user {} to kafka topic", user.getEmail());
                             }
-                            case OptInStatus.UNSUBSCRIBED -> log.info("unsubscribed user {} not receiving email alert", user.getEmail());
+                            case OptInStatus.UNSUBSCRIBED -> log.info("Unsubscribed user {} not receiving email alert", user.getEmail());
 
-                            default -> log.info("not sending email alert to kafka topic due to invalid subtype... ");
+                            default -> log.info("Not sending email alert to kafka topic due to invalid subtype... ");
 
                         }
                     }
@@ -125,10 +125,10 @@ public class DisasterEventService {
 
                             case OptInStatus.SUBSCRIBED -> {
                                 eventProducer.publishEvents(events, sms_topic, user);
-                                log.info("sending sms alter for user {} receiving sms alert", user.getEmail());
+                                log.info("Sending sms alter for user {} receiving sms alert", user.getEmail());
                             }
 
-                            case OptInStatus.UNSUBSCRIBED -> log.info("unsubscribed user {} for sms not receiving sms alert", user.getEmail());
+                            case OptInStatus.UNSUBSCRIBED -> log.info("Unsubscribed user {} for sms not receiving sms alert", user.getEmail());
 
                             default -> log.info("Not sending sms alert due to invalid subtype...");
                         }
@@ -142,12 +142,12 @@ public class DisasterEventService {
                                 eventProducer.publishEvents(events, sms_topic, user);
                                 eventProducer.publishEvents(events, email_topic, user);
 
-                                log.info("sending email and sms alter to kafka topic for user {} ", user.getEmail());
+                                log.info("Sending email and sms alter to kafka topic for user {} ", user.getEmail());
                             }
 
-                            case OptInStatus.UNSUBSCRIBED -> log.info("unsubscribed user {} not receiving sms and email alert", user.getEmail());
+                            case OptInStatus.UNSUBSCRIBED -> log.info("Unsubscribed user {} not receiving sms and email alert", user.getEmail());
 
-                            default -> log.info("not sending email and sms alter due to invalid subtype");
+                            default -> log.info("Not sending email and sms alert due to invalid subtype");
 
                         }
                     }
