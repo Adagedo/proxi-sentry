@@ -47,7 +47,7 @@ public class DisasterEventService {
     public void processAndSendDisasterAlertToKafkaTopic(EonetPayload eonetPayload){
 
         if(eonetPayload.events().isEmpty()){
-            log.info("not events found for {}", LocalDateTime.now());
+            log.info("no events found for {}", LocalDateTime.now());
         }
 
         for (Events events: eonetPayload.events()) {
