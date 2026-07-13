@@ -2,6 +2,8 @@ package code.adagedo.proxialertengine.service;
 
 import code.adagedo.proxialertengine.dtos.OptInChannel;
 import code.adagedo.proxialertengine.dtos.OptInStatus;
+import code.adagedo.proxialertengine.dtos.notification.welcome_alert.Recipient;
+import code.adagedo.proxialertengine.dtos.notification.welcome_alert.RegisterNotificationEvent;
 import code.adagedo.proxialertengine.dtos.request.OptInRequest;
 import code.adagedo.proxialertengine.dtos.request.SubscriptionRequest;
 import code.adagedo.proxialertengine.exceptions.ChannelNameException;
@@ -9,12 +11,17 @@ import code.adagedo.proxialertengine.exceptions.UserAlreadySubscribedException;
 import code.adagedo.proxialertengine.exceptions.UserNotSubscribedException;
 import code.adagedo.proxialertengine.models.NotificationSetting;
 import code.adagedo.proxialertengine.models.User;
+import code.adagedo.proxialertengine.producer.EventProducer;
 import code.adagedo.proxialertengine.repositories.NotificationRepository;
 import code.adagedo.proxialertengine.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -24,6 +31,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final NotificationRepository notificationRepository;
+
+    private final EventProducer eventProducer;
+
+    @Value("${spring.kafka.topics.user_registered_topic}")
+    private String user_registered;
 
     @Transactional
     public User registerUser(SubscriptionRequest request){
@@ -35,7 +47,7 @@ public class UserService {
             throw new UserAlreadySubscribedException("user already subscribed");
         }
 
-        User user = User.builder()
+        User new_user = User.builder()
                 .firstName(request.firstName())
                 .lastName(request.lastName())
                 .phoneNumber(request.phoneNumber())
@@ -45,15 +57,26 @@ public class UserService {
                 .build();
 
         NotificationSetting notificationSetting = NotificationSetting.builder()
-                        .user(user)
+                        .user(new_user)
                                 .channel(OptInChannel.BOTH)
                                         .optin_status(OptInStatus.SUBSCRIBED).build();
 
-        log.info("saving new subscribed user to db");
 
         notificationRepository.save(notificationSetting);
 
-        return userRepository.save(user);
+        User user = userRepository.save(new_user);
+        log.info("saving new subscribed user to db");
+        String name = user.getFirstName() + " " + user.getLastName();
+        Recipient recipient = new Recipient(user.getEmail(), name);
+        RegisterNotificationEvent event = new RegisterNotificationEvent(
+                String.valueOf(UUID.randomUUID()),
+                "USER REGISTERED",
+                recipient,
+                "Welcome to Proxy Sentry",
+                Instant.now()
+        );
+        eventProducer.publishEvents(event, user_registered, user);
+        return user;
     }
 
     @Transactional

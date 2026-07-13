@@ -17,6 +17,17 @@ spring:
           max-idle: 8
           min-idle: 0
           max-wait: -1ms
+  kafka:
+    topics:
+      user_registered_topic: proxy-sentry-user-registered
+      email_topic: email-disaster-alerts-notification
+      sms_topic: sms-disaster-alerts-notification
+    bootstrap-servers: localhost:9092,localhost:9094,localhost:9095
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        retries: 3
 
   jpa:
     open-in-view: false
