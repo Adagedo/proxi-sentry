@@ -67,11 +67,14 @@ public class UserService {
         log.info("saving new subscribed user to db");
         String name = user.getFirstName() + " " + user.getLastName();
         Recipient recipient = new Recipient(user.getEmail(), name);
+        String message = "Welcome to ProxySentry! You have successfully subscribed to real-time proximity disaster tracking. You will now receive immediate notifications for any environmental hazards detected near your location.";
+
         RegisterNotificationEvent event = new RegisterNotificationEvent(
                 String.valueOf(UUID.randomUUID()),
                 "USER REGISTERED",
                 recipient,
                 "Welcome to Proxy Sentry",
+                message,
                 Instant.now()
         );
         eventProducer.publishEvents(event, user_registered, user);
