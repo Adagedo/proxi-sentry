@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -24,6 +25,11 @@ public class DisasterEventService {
     private static final String KNOWN_EVENTS_KEY = "proxy_sentry:known_events";
 
     public void processAndSendDisasterAlertToKafkaTopic(EonetPayload eonetPayload){
+
+        if(eonetPayload.events().isEmpty()){
+            log.info("not events found for {}", LocalDateTime.now());
+        }
+
         for (Events events: eonetPayload.events()) {
             System.out.println(events.categories().getFirst().title());
 
