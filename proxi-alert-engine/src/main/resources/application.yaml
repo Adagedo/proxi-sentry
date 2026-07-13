@@ -6,6 +6,16 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+
   data:
     redis:
       host:  127.0.0.1
@@ -17,6 +27,7 @@ spring:
           max-idle: 8
           min-idle: 0
           max-wait: -1ms
+
   kafka:
     topics:
       user_registered_topic: proxy-sentry-user-registered
@@ -28,17 +39,6 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       properties:
         retries: 3
-
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-    database: mysql
-
 
 server:
   port: 7000
