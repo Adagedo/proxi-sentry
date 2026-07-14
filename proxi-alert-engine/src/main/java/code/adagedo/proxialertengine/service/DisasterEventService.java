@@ -37,6 +37,7 @@ public class DisasterEventService {
     private final NotificationRepository notificationRepository;
     private final EventProducer eventProducer;
     private static final String KNOWN_EVENTS_KEY = "proxy_sentry:known_events";
+
     @Value("${spring.kafka.topics.email_topic}")
     private String email_topic;
 
