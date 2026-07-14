@@ -86,8 +86,8 @@ public class SubController {
         OptInData data = new OptInData(request.email(), String.valueOf(notificationSetting.getChannel()), OptInStatus.UNSUBSCRIBED);
 
         String singleChannelMessage = String.format(
-                "Success! You have successfully unsubscribed to %s channel. We will alert you via SMS if any event is detected near your location.",
-                request.channel()
+                "Success! You have successfully unsubscribed to %s channel. We will alert you via %s if any event is detected near your location.",
+                request.channel(), notificationSetting.getChannel()
         );
 
         String bothChannelMessage = String.format(

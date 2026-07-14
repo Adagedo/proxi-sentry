@@ -4,8 +4,8 @@ spring:
 
   kafka:
     topics:
-      retry: "library-event.RETRY" # retry event topic
-      dlt: "library-events.DLT"  # dead letter topic
+      retry: "event.RETRY" # retry event topic
+      dlt: "events.DLT"  # dead letter topic
       user_registered_topic: proxy-sentry-user-registered
       disaster_email_topic: email-disaster-alerts-notification
 

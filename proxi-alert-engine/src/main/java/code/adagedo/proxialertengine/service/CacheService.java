@@ -8,14 +8,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 
-// this method sits here for testing purposes
+// this class sits here for testing purposes
 //@Service
 @RequiredArgsConstructor
 public class CacheService {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-//    @PostConstruct
+    @PostConstruct
     private void clearCache() {
         assert redisTemplate.getConnectionFactory() != null;
         redisTemplate.getConnectionFactory().getConnection().serverCommands().flushDb();

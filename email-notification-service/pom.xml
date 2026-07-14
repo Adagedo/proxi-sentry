@@ -44,6 +44,10 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -86,6 +90,7 @@
                                     <artifactId>lombok</artifactId>
                                 </path>
                             </annotationProcessorPaths>
+                            <parameters>true</parameters>
                         </configuration>
                     </execution>
                     <execution>

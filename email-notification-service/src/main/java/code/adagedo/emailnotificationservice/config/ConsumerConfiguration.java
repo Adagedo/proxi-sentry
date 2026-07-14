@@ -31,14 +31,11 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class ConsumerConfiguration {
-    public static final String RETRY = "retry";
-    public static final String SUCCESS = "success";
-    public static final String DEAD = "dead";
 
-    @Value("${topics.retry}")
+    @Value("${spring.kafka.topics.retry}")
     private String retryTopic;
 
-    @Value("${topics.dlt}")
+    @Value("${spring.kafka.topics.dlt}")
     private String deadLetterTopic;
 
     private final KafkaProperties properties;
@@ -73,6 +70,7 @@ public class ConsumerConfiguration {
         }));
         return errorHandler;
     }
+
     private @NonNull DefaultErrorHandler buildErrorHandler(ConsumerRecordRecoverer recoverer) {
         // Exponential Backoff Strategy
         var exponentialBackOff = new ExponentialBackOffWithMaxRetries(2);
@@ -82,6 +80,7 @@ public class ConsumerConfiguration {
 
         return new DefaultErrorHandler(recoverer, exponentialBackOff);
     }
+
     @Bean
     ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerContainerFactory(
             ConcurrentKafkaListenerContainerFactoryConfigurer configurer,
