@@ -83,7 +83,7 @@ public class EmailService {
         String eventType = notificationEvent.eventType();
         String disasterName = notificationEvent.payload().disasterName();
         String disasterType = notificationEvent.payload().disasterType();
-        var distanceInKm = notificationEvent.payload().distanceInKm(); // 'var' easily handles float, double, or String
+        var distanceInKm = notificationEvent.payload().distanceInKm();
         String triggeredBy = notificationEvent.payload().userName();
         double latitude = notificationEvent.payload().latitude();
         double longitude = notificationEvent.payload().longitude();
@@ -135,8 +135,6 @@ public class EmailService {
 
         sendMail(recipientEmail, eventType, message);
         log.info("sending disaster alert to user {}", recipientEmail);
-
-        // send alert email here
     }
 
     @Async
