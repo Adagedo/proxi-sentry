@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/sms-notification-service/pom.xml" />
         <option value="$PROJECT_DIR$/proxi-alert-engine/pom.xml" />
+        <option value="$PROJECT_DIR$/email-notification-service/pom.xml" />
       </list>
     </option>
   </component>

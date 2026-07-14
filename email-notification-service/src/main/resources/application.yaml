@@ -1,3 +1,29 @@
 spring:
   application:
     name: email-notification-service
+
+  kafka:
+    topics:
+      retry: "library-event.RETRY" # retry event topic
+      dlt: "library-events.DLT"  # dead letter topic
+      user_registered_topic: proxy-sentry-user-registered
+      disaster_email_topic: email-disaster-alerts-notification
+
+    bootstrap-servers: localhost:9092,localhost:9094,localhost:9095
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: email-listeners-group
+
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
