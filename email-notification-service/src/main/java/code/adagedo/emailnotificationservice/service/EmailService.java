@@ -63,10 +63,10 @@ public class EmailService {
                 recipient_email
         );
 
-        // sending welcome email here
         sendMail(recipient_email, subject, body);
         log.info("sending welcome email to {}", recipient_email);
         }catch (Exception e){
+            // kept the exception for debugging purpose
             log.error("--- TARGET EXCEPTION IDENTIFIED ---");
             log.error("Exception class: {}", e.getClass().getName());
             log.error("Error message details: {}", e.getMessage());
