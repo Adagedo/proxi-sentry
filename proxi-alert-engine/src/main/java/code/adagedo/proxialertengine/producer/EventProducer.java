@@ -2,6 +2,7 @@ package code.adagedo.proxialertengine.producer;
 
 
 import code.adagedo.proxialertengine.models.User;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -27,8 +28,10 @@ public class EventProducer {
 
     private final ObjectMapper objectMapper;
 
-    public static final String HEADER_EVENT_SOURCE = "event-source";
-    public static final String SOURCE_SCANNER = "scanner";
+    @Getter
+    private static final String HEADER_EVENT_SOURCE = "event-source";
+    @Getter
+    private static final String SOURCE_SCANNER = "scanner";
 
     public <T> void publishEvents(T events, String topic, User user){
 
