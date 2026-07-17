@@ -23,6 +23,5 @@ public record RegisterNotificationEvent(
         String message,
 
         @JsonProperty("createdAt")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'", timezone = "UTC")
-        Instant createdAt
+        String createdAt
 ) { }

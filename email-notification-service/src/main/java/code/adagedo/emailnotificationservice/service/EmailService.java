@@ -3,17 +3,23 @@ package code.adagedo.emailnotificationservice.service;
 
 import code.adagedo.emailnotificationservice.dto.disaster_alert.NotificationEvent;
 import code.adagedo.emailnotificationservice.dto.welcome.RegisterNotificationEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.springframework.dao.RecoverableDataAccessException;
-import org.springframework.mail.MailSendException;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 
 @Slf4j
@@ -25,7 +31,7 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    public void processWelcomeNotification(ConsumerRecord<String, String> consumerRecord) throws JsonProcessingException {
+    public void processWelcomeNotification(ConsumerRecord<String, String> consumerRecord) throws IOException {
         try{
             RegisterNotificationEvent registerNotificationEvent = objectMapper.readValue(consumerRecord.value(), RegisterNotificationEvent.class);
 
@@ -36,34 +42,27 @@ public class EmailService {
         String recipient_email = registerNotificationEvent.recipient().email();
         String recipient_name = registerNotificationEvent.recipient().name();
 
-        String body = """
-            Hello %s,
-       \s
-            Welcome to ProxySentry!\s
-       \s
-            We are sending you this update regarding your proxisentry registration.
-       \s
-            Message Details:
-            --------------------------------------------------
-            %s
-            --------------------------------------------------
-       \s
-            Registered Account Details:
-             - Name: %s
-             - Email: %s
-       \s
-            If you have any questions, feel free to reply directly to this email.
-       \s
-            Best regards,
-            The ProxySentry Team
-       \s""".formatted(
-                recipient_name,
-                message,
-                recipient_name,
-                recipient_email
-        );
 
-        sendMail(recipient_email, subject, body);
+            ClassPathResource resource =
+                    new ClassPathResource("templates/registration-notification.html");
+
+            String html = new String(
+                    resource.getInputStream().readAllBytes(),
+                    StandardCharsets.UTF_8
+            );
+
+            Map<String, String> values = Map.of(
+                    "event", event,
+                    "recipientName", recipient_name,
+                    "recipientEmail", recipient_email,
+                    "message", message
+            );
+
+            for (Map.Entry<String, String> entry : values.entrySet()) {
+                html = html.replace("{{" + entry.getKey() + "}}", entry.getValue());
+            }
+
+        sendMail(recipient_email, subject, html);
         log.info("sending welcome email to {}", recipient_email);
         }catch (Exception e){
             // kept the exception for debugging purpose
@@ -76,7 +75,7 @@ public class EmailService {
         }
     }
 
-    public void processDisasterAlertNotification(ConsumerRecord<String, String> consumerRecord) throws JsonProcessingException {
+    public void processDisasterAlertNotification(ConsumerRecord<String, String> consumerRecord) throws IOException {
 
         NotificationEvent notificationEvent = objectMapper.readValue(consumerRecord.value(), NotificationEvent.class);
 
@@ -91,68 +90,58 @@ public class EmailService {
         String recipientName = notificationEvent.recipient().userName();
         String recipientPhoneNumber = notificationEvent.recipient().phoneNumber();
 
-        String message = String.format(
-                """
-                URGENT SAFETY ALERT: %1$s [%3$s - %2$s]
-                
-                Hello %9$s,
-                
-                This is an automated emergency notification from ProxySentry. A critical environmental event has been flagged near your monitored parameter.
-                
-                Disaster Threat Assessment:
-                --------------------------------------------------
-                Event Action:  %1$s
-                Disaster Type: %3$s
-                Disaster Name: %2$s
-                Proximity:     %4$s km away from your location
-                
-                Geographic Anchors:
-                - Latitude:  %6$s
-                - Longitude: %7$s
-                --------------------------------------------------
-                
-                Please take immediate precautions, monitor local news channels, and follow instructions from safety officials in your vicinity.
-                
-                System Dispatch Logs:
-                - Event Triggered By: %5$s
-                - Notification Target: %8$s
-                - SMS Backup Destination: %10$s
-                
-                Stay safe,
-                The ProxySentry Alert System Team
-                """,
-                eventType,
-                disasterName,
-                disasterType,
-                distanceInKm,
-                triggeredBy,
-                latitude,
-                longitude,
-                recipientEmail,
-                recipientName,
-                recipientPhoneNumber
+
+        ClassPathResource resource =
+                new ClassPathResource("templates/emergency-alert.html");
+
+        String html = new String(
+                resource.getInputStream().readAllBytes(),
+                StandardCharsets.UTF_8
         );
 
-        sendMail(recipientEmail, eventType, message);
+        Map<String, String> placeholders = Map.ofEntries(
+                Map.entry("recipientName", recipientName),
+                Map.entry("eventType", eventType),
+                Map.entry("disasterType", disasterType),
+                Map.entry("disasterName", disasterName),
+                Map.entry("distanceInKm", String.valueOf(distanceInKm)),
+                Map.entry("latitude", String.valueOf(latitude)),
+                Map.entry("longitude", String.valueOf(longitude)),
+                Map.entry("triggeredBy", triggeredBy),
+                Map.entry("recipientEmail", recipientEmail),
+                Map.entry("recipientPhoneNumber", recipientPhoneNumber),
+                Map.entry("generatedAt", LocalDateTime.now().toString())
+        );
+        for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+            html = html.replace("{{" + entry.getKey() + "}}", entry.getValue());
+        }
+
+        sendMail(recipientEmail, eventType, html);
         log.info("sending disaster alert to user {}", recipientEmail);
     }
 
     @Async
     private void sendMail(String to, String subject, String body){
+        try {
 
-        try{
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
 
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(to);
-            message.setFrom("adagedosolomon52@gmail.com");
-            message.setSubject(subject);
-            message.setText(body);
-            mailSender.send(message);
+            MimeMessageHelper helper = new MimeMessageHelper(
+                    mimeMessage,
+                    false,
+                    StandardCharsets.UTF_8.name()
+            );
 
-        }catch (RecoverableDataAccessException exception){
-            log.warn("{}, ", exception.getMessage());
-        }catch (MailSendException exception){
-            log.warn("{} ", exception.getMessage());
+            helper.setTo(to);
+            helper.setFrom("adagedosolomon52@gmail.com");
+            helper.setSubject(subject);
+
+            helper.setText(body, true);
+
+            mailSender.send(mimeMessage);
+
+        } catch (MessagingException | MailException exception) {
+            log.warn("{}", exception.getMessage());
         }
     }
 }

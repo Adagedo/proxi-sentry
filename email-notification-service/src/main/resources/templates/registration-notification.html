@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProxySentry Notification</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,Helvetica,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:30px 0;">
+    <tr>
+        <td align="center">
+
+            <table width="650"
+                   cellpadding="0"
+                   cellspacing="0"
+                   style="background:#ffffff;border-radius:10px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.1);">
+
+                <tr>
+                    <td style="background:#1565c0;padding:25px;text-align:center;color:white;">
+                        <h1 style="margin:0;">ProxySentry</h1>
+                        <p style="margin-top:8px;">
+                            {{event}}
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:30px;">
+
+                        <p style="font-size:18px;">
+                            Hello <strong>{{recipientName}}</strong>,
+                        </p>
+
+                        <p style="line-height:1.6;color:#444;">
+                            Welcome to <strong>ProxySentry!</strong>
+                        </p>
+
+                        <p style="line-height:1.6;color:#444;">
+                            We are sending you this update regarding your ProxySentry registration.
+                        </p>
+
+                        <table width="100%"
+                               cellpadding="12"
+                               cellspacing="0"
+                               style="border-collapse:collapse;border:1px solid #ddd;margin:25px 0;">
+
+                            <tr style="background:#f5f5f5;">
+                                <td>
+                                    <strong>Message</strong>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="line-height:1.7;">
+                                    {{message}}
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <table width="100%"
+                               cellpadding="10"
+                               cellspacing="0"
+                               style="border-collapse:collapse;border:1px solid #ddd;">
+
+                            <tr style="background:#f5f5f5;">
+                                <td colspan="2">
+                                    <strong>Registered Account</strong>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="35%">
+                                    <strong>Name</strong>
+                                </td>
+                                <td>{{recipientName}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Email</strong>
+                                </td>
+                                <td>{{recipientEmail}}</td>
+                            </tr>
+
+                        </table>
+
+                        <p style="margin-top:30px;line-height:1.6;color:#444;">
+                            If you have any questions, simply reply to this email and our team will be happy to assist you.
+                        </p>
+
+                        <p style="margin-top:35px;">
+                            Best regards,<br>
+                            <strong>The ProxySentry Team</strong>
+                        </p>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="background:#263238;color:white;text-align:center;padding:18px;font-size:13px;">
+                        © 2026 ProxySentry. All rights reserved.
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProxySentry Emergency Alert</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f4;font-family:Arial,Helvetica,sans-serif;">
+
+<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#f4f4f4;padding:30px 0;">
+    <tr>
+        <td align="center">
+
+            <table role="presentation"
+                   cellpadding="0"
+                   cellspacing="0"
+                   width="650"
+                   style="background:#ffffff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.1);">
+
+                <tr>
+                    <td style="background:#d32f2f;padding:25px;text-align:center;color:white;">
+                        <h1 style="margin:0;font-size:28px;">
+                            ProxySentry Emergency Alert
+                        </h1>
+                        <p style="margin-top:8px;font-size:15px;">
+                            Critical Disaster Notification
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:30px;">
+
+                        <p style="font-size:18px;margin-top:0;">
+                            Hello <strong>{{recipientName}}</strong>,
+                        </p>
+
+                        <p style="font-size:15px;line-height:1.6;color:#444;">
+                            This is an automated emergency notification from
+                            <strong>ProxySentry</strong>. A critical environmental
+                            event has been detected near your monitored location.
+                        </p>
+
+
+                        <table width="100%"
+                               cellpadding="10"
+                               cellspacing="0"
+                               style="border-collapse:collapse;border:1px solid #e53935;margin:25px 0;">
+
+                            <tr style="background:#ffebee;">
+                                <td colspan="2"
+                                    style="font-size:18px;font-weight:bold;color:#b71c1c;">
+                                    Disaster Threat Assessment
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="35%"><strong>Event Action</strong></td>
+                                <td>{{eventType}}</td>
+                            </tr>
+
+                            <tr style="background:#fafafa;">
+                                <td><strong>Disaster Type</strong></td>
+                                <td>{{disasterType}}</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Disaster Name</strong></td>
+                                <td>{{disasterName}}</td>
+                            </tr>
+
+                            <tr style="background:#fafafa;">
+                                <td><strong>Distance</strong></td>
+                                <td>{{distanceInKm}} km</td>
+                            </tr>
+
+                        </table>
+
+
+                        <table width="100%"
+                               cellpadding="10"
+                               cellspacing="0"
+                               style="border-collapse:collapse;border:1px solid #ddd;">
+
+                            <tr style="background:#f5f5f5;">
+                                <td colspan="2">
+                                    <strong>Geographic Coordinates</strong>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="35%"><strong>Latitude</strong></td>
+                                <td>{{latitude}}</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Longitude</strong></td>
+                                <td>{{longitude}}</td>
+                            </tr>
+
+                        </table>
+
+                        <div style="margin:30px 0;padding:18px;background:#fff3cd;border-left:6px solid #ffc107;">
+
+                            <strong>Recommended Action</strong>
+
+                            <p style="margin-bottom:0;line-height:1.6;">
+                                Please take immediate safety precautions,
+                                monitor official emergency broadcasts,
+                                and follow all instructions issued by
+                                your local emergency management agency.
+                            </p>
+
+                        </div>
+
+                        <table width="100%"
+                               cellpadding="8"
+                               cellspacing="0"
+                               style="border-collapse:collapse;margin-top:25px;">
+
+                            <tr style="background:#263238;color:white;">
+                                <td colspan="2">
+                                    <strong>System Dispatch Information</strong>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="40%">Event Triggered By</td>
+                                <td>{{triggeredBy}}</td>
+                            </tr>
+
+                            <tr style="background:#fafafa;">
+                                <td>Notification Email</td>
+                                <td>{{recipientEmail}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>SMS Backup</td>
+                                <td>{{recipientPhoneNumber}}</td>
+                            </tr>
+
+                            <tr style="background:#fafafa;">
+                                <td>Generated At</td>
+                                <td>{{generatedAt}}</td>
+                            </tr>
+
+                        </table>
+
+                        <p style="margin-top:35px;font-size:15px;color:#444;">
+                            Stay safe,<br>
+                            <strong>ProxySentry Alert System</strong>
+                        </p>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="background:#263238;color:#ffffff;text-align:center;padding:18px;font-size:13px;">
+                        © 2026 ProxySentry. This is an automated emergency notification.
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

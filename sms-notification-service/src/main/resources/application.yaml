@@ -1,3 +1,15 @@
 spring:
   application:
     name: sms-notification-service
+
+  kafka:
+    topics:
+      retry: "event.RETRY" # retry event topic
+      dlt: "events.DLT"  # dead letter topic
+      sms_topic: sms-disaster-alerts-notification
+
+    bootstrap-servers: localhost:9092,localhost:9094,localhost:9095
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: email-listeners-group

@@ -8,6 +8,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -15,13 +17,13 @@ public class EmailConsumers {
 
     private final EmailService emailService;
     @KafkaListener(topics = {"email-disaster-alerts-notification"}, groupId = "email-listeners-group")
-    public void ConsumerAlertNotification(ConsumerRecord<String, String> consumerRecord) throws JsonProcessingException {
+    public void ConsumerAlertNotification(ConsumerRecord<String, String> consumerRecord) throws IOException {
         log.info("alert consuming..., {}", consumerRecord);
         emailService.processDisasterAlertNotification(consumerRecord);
     }
 
     @KafkaListener(topics = {"proxy-sentry-user-registered"}, groupId = "email-listeners-group")
-    public void ConsumerWelcomeNotification(ConsumerRecord<String, String> consumerRecord) throws JsonProcessingException {
+    public void ConsumerWelcomeNotification(ConsumerRecord<String, String> consumerRecord) throws IOException {
         log.info("welcome consuming..., {}", consumerRecord);
         emailService.processWelcomeNotification(consumerRecord);
     }
