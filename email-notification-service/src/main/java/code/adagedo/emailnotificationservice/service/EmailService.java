@@ -36,11 +36,11 @@ public class EmailService {
             RegisterNotificationEvent registerNotificationEvent = objectMapper.readValue(consumerRecord.value(), RegisterNotificationEvent.class);
 
 
-        String event = registerNotificationEvent.eventType();
-        String message = registerNotificationEvent.message();
-        String subject = registerNotificationEvent.subject();
-        String recipient_email = registerNotificationEvent.recipient().email();
-        String recipient_name = registerNotificationEvent.recipient().name();
+            String event = registerNotificationEvent.eventType();
+            String message = registerNotificationEvent.message();
+            String subject = registerNotificationEvent.subject();
+            String recipient_email = registerNotificationEvent.recipient().email();
+            String recipient_name = registerNotificationEvent.recipient().name();
 
 
             ClassPathResource resource =
