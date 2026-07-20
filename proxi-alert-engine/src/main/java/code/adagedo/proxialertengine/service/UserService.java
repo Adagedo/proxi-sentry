@@ -42,7 +42,7 @@ public class UserService {
 
         User existingUser = userRepository.findByEmail(request.email());
 
-        if (existingUser!= null){
+        if (existingUser!= null && existingUser.getPhoneNumber().equals(request.phoneNumber())){
             log.info("Rejecting already subscribed user request");
             throw new UserAlreadySubscribedException("user already subscribed");
         }

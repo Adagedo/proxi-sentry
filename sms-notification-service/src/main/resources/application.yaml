@@ -13,3 +13,10 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: sms-listeners-group
+
+  sms:
+    api_key: ${SMS_API_KEY}
+    base_url: ${SMS_URL}
+
+server:
+  port: 2000

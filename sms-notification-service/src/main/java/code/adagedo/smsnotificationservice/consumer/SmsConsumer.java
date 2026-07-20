@@ -21,6 +21,6 @@ public class SmsConsumer {
 
         log.info("alert consuming... {}", consumerRecord);
 
-        smsService.processSmsAlert(consumerRecord);
+        smsService.processAndSendSmsAlert(consumerRecord);
     }
 }
