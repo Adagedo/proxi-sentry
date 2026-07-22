@@ -40,7 +40,7 @@ class EmailConsumersTest {
 
     @Test
     @DisplayName("Should successfully consume welcome notification and delegate to EmailService")
-    void shouldConsumeWelcomeNotification() throws IOException {
+    public void shouldConsumeWelcomeNotification() throws IOException {
 
         String topic = "proxy-sentry-user-registered";
         String key = "user-456";

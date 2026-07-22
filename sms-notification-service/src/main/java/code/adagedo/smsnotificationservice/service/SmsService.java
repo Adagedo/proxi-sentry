@@ -26,6 +26,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 public class SmsService {
 
     private final ObjectMapper objectMapper;
+    private final RestClient restClient;
+
 
     @Value("${spring.sms.api_key}")
     private String api_key;
@@ -115,7 +117,6 @@ public class SmsService {
                     List.of(smsMessage)
             );
 
-            RestClient restClient = RestClient.create();
             ResponseEntity<Void> response = restClient.post()
                     .uri(base_url)
                     .contentType(APPLICATION_JSON)
